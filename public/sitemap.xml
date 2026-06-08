@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  STATIC SITEMAP — covers the main navigation routes.
+  Dynamic content URLs (articles, cities, figures, history) need a server-generated
+  sitemap once you have a production domain. See the roadmap in the audit report.
+  Set VITE_SITE_URL=https://yourdomain.com in .env and replace the placeholder below.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://REPLACE_WITH_DOMAIN/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://REPLACE_WITH_DOMAIN/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://REPLACE_WITH_DOMAIN/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://REPLACE_WITH_DOMAIN/"/>
+  </url>
+
+  <url>
+    <loc>https://REPLACE_WITH_DOMAIN/articles</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://REPLACE_WITH_DOMAIN/cities</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://REPLACE_WITH_DOMAIN/figures</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://REPLACE_WITH_DOMAIN/history</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://REPLACE_WITH_DOMAIN/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+</urlset>
