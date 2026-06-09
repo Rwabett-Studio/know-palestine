@@ -28,26 +28,44 @@ function publishStatus(r: Record<string, unknown>): PublishStatus {
   return "published";
 }
 
+/** Module-level cache: once we know whether publish_status column exists,
+ *  we skip the failing request on subsequent calls (avoids double-query). */
+let _publishColExists: boolean | null = null;
+
 /** Fetch all published rows from a table.
  *  Falls back to fetching ALL rows (without filter) when the publish_status
- *  column doesn't exist yet (migration not run). */
+ *  column doesn't exist yet (migration not run). After the first check the
+ *  result is cached so subsequent calls never double-query. */
 async function listPublished(
   table: string,
   orderCol: string,
   ascending = true,
 ): Promise<Record<string, unknown>[]> {
+  // If we already know the column is missing, skip straight to full fetch
+  if (_publishColExists === false) {
+    const { data, error } = await supabase
+      .from(table)
+      .select("*")
+      .order(orderCol, { ascending });
+    fail(`load ${table}`, error);
+    return (data ?? []) as Record<string, unknown>[];
+  }
+
   let { data, error } = await supabase
     .from(table)
     .select("*")
     .eq("publish_status", "published")
     .order(orderCol, { ascending });
 
-  // Column not created yet — fall back to all rows (all treated as published)
+  // Column not created yet — cache this, fall back to all rows
   if (error?.message?.includes("publish_status")) {
+    _publishColExists = false;
     ({ data, error } = await supabase
       .from(table)
       .select("*")
       .order(orderCol, { ascending }));
+  } else {
+    _publishColExists = true;
   }
 
   fail(`load ${table}`, error);

@@ -29,9 +29,12 @@ export function ArticleCard({ article, imageHeight = 202 }: ArticleCardProps) {
           style={{ height: `${imageHeight}px` }}
           className="w-full object-cover rounded-[24px] bg-placeholder transition-transform duration-300 group-hover:scale-[1.01]"
         />
-        <h3 className="mt-4 text-base font-bold text-text-primary group-hover:underline">
+        <h3 className="mt-4 text-base font-bold text-text-primary group-hover:underline line-clamp-2 leading-7">
           {title}
         </h3>
+        <p className="mt-1 text-sm text-text-secondary line-clamp-2 leading-6">
+          {pick(article, "excerpt")}
+        </p>
         <div className="mt-3 flex items-center justify-between text-xs text-text-secondary">
           <span className="inline-flex items-center gap-1 h-7 px-3 rounded-md bg-surface">
             {t("section_share")} <span aria-hidden>↗</span>

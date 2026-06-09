@@ -38,3 +38,12 @@ UPDATE articles SET image = 'https://upload.wikimedia.org/wikipedia/commons/thum
 UPDATE articles SET image = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Jerusalem-2013-Temple_Mount-Al-Aqsa_Mosque_%28NE_exposure%29.jpg/640px-Jerusalem-2013-Temple_Mount-Al-Aqsa_Mosque_%28NE_exposure%29.jpg' WHERE id = 'ard-almoqawama';
 -- Fix articles with empty images
 UPDATE articles SET image = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Nablus_2013.jpg/640px-Nablus_2013.jpg' WHERE image = '' OR image IS NULL;
+
+-- Fix 2 articles with broken titles (body text was stored in title field)
+UPDATE articles
+SET title = 'كيف بدأت شرارة الإنتفاضة الفلسطينية الكبرى؟'
+WHERE id LIKE 'كيف-بدأت-شرارة%';
+
+UPDATE articles
+SET title = 'لوحة فنية بعنوان ''أرض المقاومة'' هل ترى ما أرى؟'
+WHERE id LIKE 'عنوان-المقال%';

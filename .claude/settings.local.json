@@ -56,7 +56,9 @@
       "Bash(node -e ' *)",
       "Bash(curl -s -A Mozilla/5.0 https://en.wikipedia.org/api/rest_v1/page/summary/__TRACKED_VAR__)",
       "Bash(grep -n \"<img\" \"/Users/aymantaher/Documents/MY Workspace/Know palestine/lovable Web v2/src/routes/cities.\\\\$id.tsx\" | head -10)",
-      "Bash(grep -n \"onError\\\\|<img\" \\\\ *)"
+      "Bash(grep -n \"onError\\\\|<img\" \\\\ *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)"
     ]
   }
 }

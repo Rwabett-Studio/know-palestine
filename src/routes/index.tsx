@@ -29,10 +29,10 @@ export function Home() {
   const heroDesc = settingValue(settings, "home_hero_description", lang,
     lang === "ar" ? HOME_HERO.description : HOME_HERO.descriptionEn);
 
-  const { data: articles = [] } = useArticles();
-  const { data: cities = [] } = useCities();
-  const { data: figures = [] } = useFigures();
-  const { data: history = [] } = useHistory();
+  const { data: articles = [], isLoading: loadingArticles } = useArticles();
+  const { data: cities = [], isLoading: loadingCities } = useCities();
+  const { data: figures = [], isLoading: loadingFigures } = useFigures();
+  const { data: history = [], isLoading: loadingHistory } = useHistory();
 
   const latest = articles.slice(0, 6);
   const featuredCities = cities.slice(0, 4);
@@ -60,7 +60,9 @@ export function Home() {
       <section className="mb-20">
         <SectionHeader title={t("home_latest")} seeAllHref="/articles" />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-[29px] gap-y-12">
-          {latest.map((a) => <ArticleCard key={a.id} article={a} />)}
+          {loadingArticles
+            ? Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)
+            : latest.map((a) => <ArticleCard key={a.id} article={a} />)}
         </div>
       </section>
 
@@ -74,7 +76,9 @@ export function Home() {
           seeAllHref="/cities"
         />
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-x-[29px] gap-y-12">
-          {featuredCities.map((c) => <CityCard key={c.id} city={c} />)}
+          {loadingCities
+            ? Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)
+            : featuredCities.map((c) => <CityCard key={c.id} city={c} />)}
         </div>
       </section>
 
@@ -118,7 +122,9 @@ export function Home() {
       <section className="mb-20">
         <SectionHeader title={t("home_figures")} seeAllHref="/figures" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[29px] gap-y-12">
-          {topFigures.map((f) => <FigureCard key={f.id} figure={f} />)}
+          {loadingFigures
+            ? Array.from({ length: 4 }).map((_, i) => <FigureSkeleton key={i} />)
+            : topFigures.map((f) => <FigureCard key={f.id} figure={f} />)}
         </div>
       </section>
 
@@ -128,7 +134,17 @@ export function Home() {
       <section className="mb-12">
         <SectionHeader title={t("home_history")} seeAllHref="/history" />
         <ol className="divide-y divide-border">
-          {recentHistory.map((ev) => (
+          {loadingHistory
+            ? Array.from({ length: 5 }).map((_, i) => (
+                <li key={i} className="flex items-center gap-4 py-5 px-4">
+                  <div className="w-16 h-16 rounded-xl bg-surface animate-pulse shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-surface animate-pulse rounded w-3/4" />
+                    <div className="h-3 bg-surface animate-pulse rounded w-1/3" />
+                  </div>
+                </li>
+              ))
+            : recentHistory.map((ev) => (
             <li key={ev.id}>
               <Link
                 to="/history/$id"
@@ -151,6 +167,29 @@ export function Home() {
           ))}
         </ol>
       </section>
+    </div>
+  );
+}
+
+function CardSkeleton() {
+  return (
+    <div className="flex flex-col animate-pulse">
+      <div className="w-full h-[202px] rounded-[24px] bg-surface" />
+      <div className="mt-4 space-y-2">
+        <div className="h-4 bg-surface rounded w-4/5" />
+        <div className="h-3 bg-surface rounded w-3/5" />
+        <div className="h-3 bg-surface rounded w-2/5" />
+      </div>
+    </div>
+  );
+}
+
+function FigureSkeleton() {
+  return (
+    <div className="flex flex-col items-center animate-pulse">
+      <div className="w-32 h-32 rounded-full bg-surface" />
+      <div className="mt-4 h-4 bg-surface rounded w-20" />
+      <div className="mt-2 h-3 bg-surface rounded w-14" />
     </div>
   );
 }
