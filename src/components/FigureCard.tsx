@@ -21,6 +21,7 @@ export function FigureCard({ figure }: { figure: Figure }) {
           src={figure.portrait}
           alt={name}
           loading="lazy"
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = ""; }}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform"
         />
       </div>

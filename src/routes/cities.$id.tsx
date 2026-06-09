@@ -113,6 +113,7 @@ export function CityDetail() {
       <img
         src={city.image}
         alt={name}
+        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = ""; }}
         className="w-full h-[360px] object-cover rounded-[24px] bg-placeholder mb-10"
       />
 

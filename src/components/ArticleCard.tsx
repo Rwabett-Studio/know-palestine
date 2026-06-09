@@ -25,6 +25,7 @@ export function ArticleCard({ article, imageHeight = 202 }: ArticleCardProps) {
           src={article.image}
           alt={title}
           loading="lazy"
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = ""; }}
           style={{ height: `${imageHeight}px` }}
           className="w-full object-cover rounded-[24px] bg-placeholder transition-transform duration-300 group-hover:scale-[1.01]"
         />

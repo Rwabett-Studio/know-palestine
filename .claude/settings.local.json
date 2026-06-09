@@ -45,7 +45,18 @@
       "Bash(gh auth *)",
       "Bash(gh repo *)",
       "Bash(git init *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(ls ~/.ssh/*.pub 2>/dev/null && echo \"SSH keys found\" || echo \"No SSH keys found\")",
+      "Bash(git config *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s -A Mozilla/5.0 https://en.wikipedia.org/api/rest_v1/page/summary/__TRACKED_VAR__)",
+      "Bash(grep -n \"<img\" \"/Users/aymantaher/Documents/MY Workspace/Know palestine/lovable Web v2/src/routes/cities.\\\\$id.tsx\" | head -10)",
+      "Bash(grep -n \"onError\\\\|<img\" \\\\ *)"
     ]
   }
 }

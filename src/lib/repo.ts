@@ -28,6 +28,32 @@ function publishStatus(r: Record<string, unknown>): PublishStatus {
   return "published";
 }
 
+/** Fetch all published rows from a table.
+ *  Falls back to fetching ALL rows (without filter) when the publish_status
+ *  column doesn't exist yet (migration not run). */
+async function listPublished(
+  table: string,
+  orderCol: string,
+  ascending = true,
+): Promise<Record<string, unknown>[]> {
+  let { data, error } = await supabase
+    .from(table)
+    .select("*")
+    .eq("publish_status", "published")
+    .order(orderCol, { ascending });
+
+  // Column not created yet — fall back to all rows (all treated as published)
+  if (error?.message?.includes("publish_status")) {
+    ({ data, error } = await supabase
+      .from(table)
+      .select("*")
+      .order(orderCol, { ascending }));
+  }
+
+  fail(`load ${table}`, error);
+  return (data ?? []) as Record<string, unknown>[];
+}
+
 // ---------- cities ----------
 function rowToCity(r: Record<string, unknown>): City {
   return {
@@ -271,15 +297,9 @@ export const repo = {
 
   // ── Cities ───────────────────────────────────────────────────────────────
   cities: {
-    /** Public: only published cities. */
+    /** Public: only published cities (graceful if publish_status column missing). */
     async list(): Promise<City[]> {
-      const { data, error } = await supabase
-        .from("cities")
-        .select("*")
-        .eq("publish_status", "published")
-        .order("sort_order", { ascending: true });
-      fail("load cities", error);
-      return (data ?? []).map(rowToCity);
+      return (await listPublished("cities", "sort_order")).map(rowToCity);
     },
     /** Admin: all cities including draft/archived. */
     async listAll(): Promise<City[]> {
@@ -315,15 +335,9 @@ export const repo = {
 
   // ── Articles ─────────────────────────────────────────────────────────────
   articles: {
-    /** Public: only published articles. */
+    /** Public: only published articles (graceful if publish_status column missing). */
     async list(): Promise<Article[]> {
-      const { data, error } = await supabase
-        .from("articles")
-        .select("*")
-        .eq("publish_status", "published")
-        .order("sort_order", { ascending: true });
-      fail("load articles", error);
-      return (data ?? []).map(rowToArticle);
+      return (await listPublished("articles", "sort_order")).map(rowToArticle);
     },
     /** Admin: all articles including draft/archived. */
     async listAll(): Promise<Article[]> {
@@ -364,15 +378,9 @@ export const repo = {
 
   // ── Figures ───────────────────────────────────────────────────────────────
   figures: {
-    /** Public: only published figures. */
+    /** Public: only published figures (graceful if publish_status column missing). */
     async list(): Promise<Figure[]> {
-      const { data, error } = await supabase
-        .from("figures")
-        .select("*")
-        .eq("publish_status", "published")
-        .order("sort_order", { ascending: true });
-      fail("load figures", error);
-      return (data ?? []).map(rowToFigure);
+      return (await listPublished("figures", "sort_order")).map(rowToFigure);
     },
     /** Admin: all figures including draft/archived. */
     async listAll(): Promise<Figure[]> {
@@ -408,15 +416,9 @@ export const repo = {
 
   // ── History events ────────────────────────────────────────────────────────
   history: {
-    /** Public: only published events. */
+    /** Public: only published events (graceful if publish_status column missing). */
     async list(): Promise<HistoryEvent[]> {
-      const { data, error } = await supabase
-        .from("history_events")
-        .select("*")
-        .eq("publish_status", "published")
-        .order("iso_date", { ascending: true });
-      fail("load history", error);
-      return (data ?? []).map(rowToHistory);
+      return (await listPublished("history_events", "iso_date")).map(rowToHistory);
     },
     /** Admin: all events including draft/archived. */
     async listAll(): Promise<HistoryEvent[]> {

@@ -91,6 +91,7 @@ export function Home() {
           <img
             src={longFeatured.image}
             alt={pick(longFeatured, "title")}
+            onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = ""; }}
             className="w-full h-[420px] object-cover rounded-[32px] bg-placeholder"
           />
           <div className={`${align} flex flex-col justify-center`}>
@@ -138,6 +139,7 @@ export function Home() {
                   src={ev.image}
                   alt={pick(ev, "title")}
                   loading="lazy"
+                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = ""; }}
                   className="w-16 h-16 object-cover rounded-xl bg-placeholder shrink-0"
                 />
                 <div className={`flex-1 ${align}`}>

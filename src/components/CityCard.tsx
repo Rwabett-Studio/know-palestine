@@ -25,6 +25,7 @@ export function CityCard({ city }: CityCardProps) {
           src={city.image}
           alt={name}
           loading="lazy"
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = ""; }}
           className="w-full h-[196px] object-cover rounded-[24px] bg-placeholder transition-transform duration-300 group-hover:scale-[1.01]"
         />
         <div className="mt-4">

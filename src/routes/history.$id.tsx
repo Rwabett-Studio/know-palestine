@@ -78,6 +78,7 @@ export function HistoryDetail() {
         <img
           src={ev.image}
           alt={pick(ev, "title")}
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = ""; }}
           className="w-full h-[420px] object-cover rounded-[44px] bg-placeholder mb-8"
         />
         <p className="text-base text-text-primary leading-9">{pick(ev, "description")}</p>

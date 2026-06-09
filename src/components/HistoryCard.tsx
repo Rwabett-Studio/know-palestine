@@ -19,6 +19,7 @@ export function HistoryCard({ event }: { event: HistoryEvent }) {
         src={event.image}
         alt={title}
         loading="lazy"
+        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = ""; }}
         className="w-full h-[202px] object-cover rounded-[24px] bg-placeholder group-hover:opacity-90 transition-opacity"
       />
       <div className={`mt-4 ${align}`}>

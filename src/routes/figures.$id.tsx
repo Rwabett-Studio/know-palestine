@@ -81,6 +81,7 @@ export function FigureDetail() {
         <img
           src={figure.portrait}
           alt={name}
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = ""; }}
           className="w-full max-w-[280px] aspect-square rounded-[24px] object-cover bg-placeholder mx-auto"
         />
         <div className={align}>
